@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "cd WorkoutAppService && dotnet watch run",
+    "test": "dotnet test",
+    "update-dependencies": "dotnet outdated -u",
+    "outdated": "dotnet outdated",
+    "clean-dist": "rm -rf WorkoutAppService/dist",
+    "build": "npm run clean-dist && cd WorkoutAppService && dotnet publish -c=Debug -o dist",
+    "build-prod": "npm run clean-dist && cd WorkoutAppService && dotnet publish -c=Release -o dist",
+    "download-secrets": "scp root@rwherber.com:/var/www/html/APIs/SettingsFiles/WorkoutAppService/appsettings.Secrets.json ./WorkoutAppService",
+    "upload-secrets": "scp ./WorkoutAppService/appsettings.Secrets.json root@rwherber.com:/var/www/html/APIs/SettingsFiles/WorkoutAppService"
+  }
+}

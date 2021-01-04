@@ -1,0 +1,33 @@
+[
+  {
+    "Id": 1,
+    "Name": "Bicep Curl",
+    "PrimaryMuscle": {
+      "Id": 12,
+      "Name": "Biceps"
+    },
+    "ExerciseSteps": [
+      {
+        "ExerciseStepNumber": 1,
+        "Description": "Stand with feet hip distance apart arms fully extended with a slight bend in elbow."
+      },
+      {
+        "ExerciseStepNumber": 2,
+        "Description": "Bring weights in towards shoulders to complete bicep curl, lower slowly back to start."
+      }
+    ],
+    "Equipment": [
+      {
+        "Id": 3
+      }
+    ],
+    "ExerciseCategorys": [
+      {
+        "Id": 5
+      },
+      {
+        "Id": 10
+      }
+    ]
+  }
+]
