@@ -88,6 +88,30 @@ namespace WorkoutAppService.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<MuscleForReturnDto>> PutMuscleAsync(int id, [FromBody] MuscleForCreateDto dto)
+        {
+            var muscle = await muscleRepository.GetByIdAsync(id);
+
+            if (muscle == null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(dto, muscle);
+
+            var saveResult = await muscleRepository.SaveAllAsync();
+
+            if (!saveResult)
+            {
+                return BadRequest("Could not apply changes.");
+            }
+
+            var muscleToReturn = mapper.Map<MuscleForReturnDto>(muscle);
+
+            return Ok(muscleToReturn);
+        }
+
         [HttpPatch("{id}")]
         public async Task<ActionResult<MuscleForReturnDto>> UpdateMuscleAsync(int id, [FromBody] JsonPatchDocument<MuscleForUpdateDto> dtoPatchDoc)
         {

@@ -89,6 +89,30 @@ namespace WorkoutAppService.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<EquipmentForReturnDto>> PutEquipmentAsync(int id, [FromBody] EquipmentForCreationDto dto)
+        {
+            var equipment = await equipmentRepository.GetByIdAsync(id);
+
+            if (equipment == null)
+            {
+                return NotFound();
+            }
+
+            this.mapper.Map(dto, equipment);
+
+            var saveResult = await equipmentRepository.SaveAllAsync();
+
+            if (!saveResult)
+            {
+                return BadRequest("Could not apply changes.");
+            }
+
+            var equipmentToReturn = mapper.Map<EquipmentForReturnDto>(equipment);
+
+            return Ok(equipmentToReturn);
+        }
+
         [HttpPatch("{id}")]
         public async Task<ActionResult<EquipmentForReturnDto>> UpdateEquipmentAsync(int id, [FromBody] JsonPatchDocument<EquipmentForUpdateDto> dtoPatchDoc)
         {
