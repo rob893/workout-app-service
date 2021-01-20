@@ -75,7 +75,7 @@ namespace WorkoutAppService.Controllers
         {
             try
             {
-                var validatedToken = await GoogleJsonWebSignature.ValidateAsync(userForRegisterDto.IdToken, new GoogleJsonWebSignature.ValidationSettings { Audience = new List<string> { "504553588506-joctqv1rhpn8o06apgdb2904qfi6fn26.apps.googleusercontent.com" } });
+                var validatedToken = await GoogleJsonWebSignature.ValidateAsync(userForRegisterDto.IdToken, new GoogleJsonWebSignature.ValidationSettings { Audience = this.authSettings.GoogleOAuthAudiences });
 
                 var user = new User
                 {
@@ -183,7 +183,7 @@ namespace WorkoutAppService.Controllers
         {
             try
             {
-                var validatedToken = await GoogleJsonWebSignature.ValidateAsync(userForLoginDto.IdToken, new GoogleJsonWebSignature.ValidationSettings { Audience = new List<string> { "504553588506-joctqv1rhpn8o06apgdb2904qfi6fn26.apps.googleusercontent.com" } });
+                var validatedToken = await GoogleJsonWebSignature.ValidateAsync(userForLoginDto.IdToken, new GoogleJsonWebSignature.ValidationSettings { Audience = this.authSettings.GoogleOAuthAudiences });
 
                 var user = await userRepository.GetByLinkedAccountAsync(validatedToken.Subject, LinkedAccountType.Google, user => user.RefreshTokens);
 

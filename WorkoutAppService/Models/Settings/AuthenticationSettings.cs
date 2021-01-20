@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace WorkoutAppService.Models.Settings
 {
     public record AuthenticationSettings
@@ -25,5 +26,10 @@ namespace WorkoutAppService.Models.Settings
         public int TokenExpirationTimeInMinutes { get; init; }
 
         public int RefreshTokenExpirationTimeInMinutes { get; init; }
+
+        /// <summary>
+        /// List of Google OAuth Client IDs to validate Google Tokens against
+        /// </summary>
+        public List<string> GoogleOAuthAudiences { get; init; } = new List<string>();
     }
 }
