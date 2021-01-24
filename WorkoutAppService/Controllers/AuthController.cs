@@ -270,7 +270,7 @@ namespace WorkoutAppService.Controllers
 
             user.RefreshTokens.RemoveAll(token => token.Expiration <= DateTime.UtcNow);
 
-            var currentRefreshToken = user.RefreshTokens.FirstOrDefault(token => token.DeviceId == refreshTokenDto.DeviceId);
+            var currentRefreshToken = user.RefreshTokens.FirstOrDefault(token => token.DeviceId == refreshTokenDto.DeviceId && token.Token == refreshTokenDto.RefreshToken);
 
             if (currentRefreshToken == null)
             {
@@ -336,7 +336,7 @@ namespace WorkoutAppService.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(authSettings.TokenExpirationTimeInMinutes),
+                Expires = DateTime.UtcNow.AddSeconds(10), // DateTime.UtcNow.AddMinutes(authSettings.TokenExpirationTimeInMinutes),
                 NotBefore = DateTime.UtcNow,
                 SigningCredentials = creds,
                 Audience = authSettings.TokenAudience,
