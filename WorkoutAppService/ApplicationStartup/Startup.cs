@@ -10,6 +10,7 @@ using HealthChecks.UI.Client;
 using AutoMapper;
 using Microsoft.AspNetCore.HttpOverrides;
 using WorkoutAppService.Middleware;
+using WorkoutAppService.Core;
 
 namespace WorkoutAppService.ApplicationStartup
 {
@@ -31,6 +32,7 @@ namespace WorkoutAppService.ApplicationStartup
                 .AddAuthenticationServices(Configuration)
                 .AddIdentityServices()
                 .AddRepositoryServices()
+                .AddSingleton<Counter>()
                 // .AddHangfireServices(Configuration)
                 .AddSwaggerServices(Configuration)
                 .AddAutoMapper(typeof(Startup))

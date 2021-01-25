@@ -336,7 +336,7 @@ namespace WorkoutAppService.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddSeconds(10), // DateTime.UtcNow.AddMinutes(authSettings.TokenExpirationTimeInMinutes),
+                Expires = DateTime.UtcNow.AddMinutes(authSettings.TokenExpirationTimeInMinutes),
                 NotBefore = DateTime.UtcNow,
                 SigningCredentials = creds,
                 Audience = authSettings.TokenAudience,
