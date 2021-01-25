@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +24,9 @@ namespace WorkoutAppService.Controllers
             this.counter.Count++;
             Thread.Sleep(delay);
 
-            if (statusAfter != null && per != null && per.Value != 0 && this.counter.Count % per.Value == 0)
-            {
-                return this.GetReturn(statusAfter.Value);
-            }
-
-            return this.GetReturn(status);
+            return statusAfter != null && per != null && per.Value != 0 && this.counter.Count % per.Value == 0
+                ? this.GetReturn(statusAfter.Value)
+                : this.GetReturn(status);
         }
 
         private ActionResult GetReturn(HttpStatusCode status)
