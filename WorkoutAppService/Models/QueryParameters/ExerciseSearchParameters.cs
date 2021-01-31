@@ -6,7 +6,5 @@ namespace WorkoutAppService.Models.QueryParameters
     {
         public List<int> ExerciseCategoryId { get; init; } = new List<int>();
         public List<int> EquipmentId { get; init; } = new List<int>();
-        public List<int> PrimaryMuscleId { get; init; } = new List<int>();
-        public List<int> SecondaryMuscleId { get; init; } = new List<int>();
     }
 }

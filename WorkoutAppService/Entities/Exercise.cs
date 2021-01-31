@@ -11,8 +11,7 @@ namespace WorkoutAppService.Entities
         public string? Description { get; set; }
         public int? PrimaryMuscleId { get; set; }
         public int? SecondaryMuscleId { get; set; }
-        public Muscle? PrimaryMuscle { get; set; }
-        public Muscle? SecondaryMuscle { get; set; }
+        public List<MuscleUsage> Muscles { get; set; } = new List<MuscleUsage>();
         public List<ExerciseStep> ExerciseSteps { get; set; } = new List<ExerciseStep>();
         public List<Equipment> Equipment { get; set; } = new List<Equipment>();
         public List<ExerciseCategory> ExerciseCategorys { get; set; } = new List<ExerciseCategory>();

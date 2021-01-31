@@ -9,5 +9,6 @@ namespace WorkoutAppService.Entities
         [MaxLength(255)]
         public string Name { get; set; } = default!;
         public List<Exercise> Exercises { get; set; } = new List<Exercise>();
+        public List<Gym> Gyms { get; set; } = new List<Gym>();
     }
 }

@@ -167,16 +167,6 @@ namespace WorkoutAppService.Data
 
             foreach (var exercise in exercises)
             {
-                if (exercise.PrimaryMuscle != null && muscleDict.ContainsKey(exercise.PrimaryMuscle.Id))
-                {
-                    exercise.PrimaryMuscle = muscleDict[exercise.PrimaryMuscle.Id];
-                }
-
-                if (exercise.SecondaryMuscle != null && muscleDict.ContainsKey(exercise.SecondaryMuscle.Id))
-                {
-                    exercise.SecondaryMuscle = muscleDict[exercise.SecondaryMuscle.Id];
-                }
-
                 var equipmentToAdd = exercise.Equipment
                     .Where(equipment => equipmentDict.ContainsKey(equipment.Id))
                     .Select(equipment => equipmentDict[equipment.Id]).ToList();

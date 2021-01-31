@@ -2,10 +2,12 @@
   {
     "Id": 1,
     "Name": "Bicep Curl",
-    "PrimaryMuscle": {
-      "Id": 12,
-      "Name": "Biceps"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 12,
+        "Usage": 100
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,
@@ -33,14 +35,16 @@
   {
     "Id": 2,
     "Name": "Bench Press",
-    "PrimaryMuscle": {
-      "Id": 10,
-      "Name": "Pectoralis"
-    },
-    "SecondaryMuscle": {
-      "Id": 13,
-      "Name": "Triceps"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 10,
+        "Usage": 75
+      },
+      {
+        "MuscleId": 13,
+        "Usage": 25
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,
@@ -92,14 +96,16 @@
   {
     "Id": 3,
     "Name": "Chest Fly",
-    "PrimaryMuscle": {
-      "Id": 10,
-      "Name": "Pectoralis"
-    },
-    "SecondaryMuscle": {
-      "Id": 11,
-      "Name": "Deltoid"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 10,
+        "Usage": 75
+      },
+      {
+        "MuscleId": 11,
+        "Usage": 25
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,
@@ -130,14 +136,16 @@
   {
     "Id": 4,
     "Name": "Deadlift",
-    "PrimaryMuscle": {
-      "Id": 2,
-      "Name": "Hamstrings"
-    },
-    "SecondaryMuscle": {
-      "Id": 4,
-      "Name": "Gluteus"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 2,
+        "Usage": 75
+      },
+      {
+        "MuscleId": 4,
+        "Usage": 25
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,
@@ -183,14 +191,16 @@
   {
     "Id": 5,
     "Name": "Squat",
-    "PrimaryMuscle": {
-      "Id": 1,
-      "Name": "Quadriceps"
-    },
-    "SecondaryMuscle": {
-      "Id": 4,
-      "Name": "Gluteus"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 1,
+        "Usage": 75
+      },
+      {
+        "MuscleId": 4,
+        "Usage": 25
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,
@@ -231,10 +241,12 @@
   {
     "Id": 6,
     "Name": "Standing Tricep Extension",
-    "PrimaryMuscle": {
-      "Id": 13,
-      "Name": "Triceps"
-    },
+    "Muscles": [
+      {
+        "MuscleId": 13,
+        "Usage": 100
+      }
+    ],
     "ExerciseSteps": [
       {
         "ExerciseStepNumber": 1,

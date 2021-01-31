@@ -26,16 +26,6 @@ namespace WorkoutAppService.Data.Repositories
                 query = query.Where(e => e.ExerciseCategorys.Any(ec => searchParams.ExerciseCategoryId.Contains(ec.Id)));
             }
 
-            if (searchParams.PrimaryMuscleId != null && searchParams.PrimaryMuscleId.Count > 0)
-            {
-                query = query.Where(e => e.PrimaryMuscle != null && searchParams.PrimaryMuscleId.Contains(e.PrimaryMuscle.Id));
-            }
-
-            if (searchParams.SecondaryMuscleId != null && searchParams.SecondaryMuscleId.Count > 0)
-            {
-                query = query.Where(e => e.SecondaryMuscle != null && searchParams.SecondaryMuscleId.Contains(e.SecondaryMuscle.Id));
-            }
-
             return query;
         }
     }

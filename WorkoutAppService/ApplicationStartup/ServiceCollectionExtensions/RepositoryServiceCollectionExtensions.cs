@@ -13,6 +13,7 @@ namespace WorkoutAppService.ApplicationStartup.ServiceCollectionExtensions
             services.AddScoped<EquipmentRepository>();
             services.AddScoped<ExerciseCategoryRepository>();
             services.AddScoped<ExerciseRepository>();
+            services.AddScoped<GymRepository>();
 
             return services;
         }

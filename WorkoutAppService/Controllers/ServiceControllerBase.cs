@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkoutAppService.Core;
 using WorkoutAppService.Extensions;
 using WorkoutAppService.Entities;
+using System.Net;
 
 namespace WorkoutAppService.Controllers
 {
@@ -62,6 +63,18 @@ namespace WorkoutAppService.Controllers
         public UnauthorizedObjectResult Unauthorized(IList<string> errorMessages)
         {
             return base.Unauthorized(new ProblemDetailsWithErrors(errorMessages, 401, Request));
+        }
+
+        [NonAction]
+        public ObjectResult Forbidden(string errorMessage)
+        {
+            return base.StatusCode(403, new ProblemDetailsWithErrors(errorMessage, HttpStatusCode.Forbidden, Request));
+        }
+
+        [NonAction]
+        public ObjectResult Forbidden(IList<string> errorMessages)
+        {
+            return base.StatusCode(403, new ProblemDetailsWithErrors(errorMessages, HttpStatusCode.Forbidden, Request));
         }
 
         [NonAction]

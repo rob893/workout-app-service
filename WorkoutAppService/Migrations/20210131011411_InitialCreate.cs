@@ -79,6 +79,22 @@ namespace WorkoutAppService.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Exercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    PrimaryMuscleId = table.Column<int>(type: "int", nullable: true),
+                    SecondaryMuscleId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Muscles",
                 columns: table => new
                 {
@@ -199,6 +215,28 @@ namespace WorkoutAppService.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Gyms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
+                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    IsPrimary = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gyms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gyms_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LinkedAccounts",
                 columns: table => new
                 {
@@ -235,34 +273,6 @@ namespace WorkoutAppService.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exercises",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    PrimaryMuscleId = table.Column<int>(type: "int", nullable: true),
-                    SecondaryMuscleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Exercises_Muscles_PrimaryMuscleId",
-                        column: x => x.PrimaryMuscleId,
-                        principalTable: "Muscles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Exercises_Muscles_SecondaryMuscleId",
-                        column: x => x.SecondaryMuscleId,
-                        principalTable: "Muscles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -332,6 +342,55 @@ namespace WorkoutAppService.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MuscleUsage",
+                columns: table => new
+                {
+                    ExerciseId = table.Column<int>(type: "int", nullable: false),
+                    MuscleId = table.Column<int>(type: "int", nullable: false),
+                    Usage = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MuscleUsage", x => new { x.ExerciseId, x.MuscleId });
+                    table.ForeignKey(
+                        name: "FK_MuscleUsage_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MuscleUsage_Muscles_MuscleId",
+                        column: x => x.MuscleId,
+                        principalTable: "Muscles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EquipmentGym",
+                columns: table => new
+                {
+                    AvailableEquipmentId = table.Column<int>(type: "int", nullable: false),
+                    GymsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EquipmentGym", x => new { x.AvailableEquipmentId, x.GymsId });
+                    table.ForeignKey(
+                        name: "FK_EquipmentGym_Equipment_AvailableEquipmentId",
+                        column: x => x.AvailableEquipmentId,
+                        principalTable: "Equipment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EquipmentGym_Gyms_GymsId",
+                        column: x => x.GymsId,
+                        principalTable: "Gyms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -375,24 +434,29 @@ namespace WorkoutAppService.Migrations
                 column: "ExercisesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EquipmentGym_GymsId",
+                table: "EquipmentGym",
+                column: "GymsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExerciseExerciseCategory_ExercisesId",
                 table: "ExerciseExerciseCategory",
                 column: "ExercisesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercises_PrimaryMuscleId",
-                table: "Exercises",
-                column: "PrimaryMuscleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Exercises_SecondaryMuscleId",
-                table: "Exercises",
-                column: "SecondaryMuscleId");
+                name: "IX_Gyms_UserId",
+                table: "Gyms",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkedAccounts_UserId",
                 table: "LinkedAccounts",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MuscleUsage_MuscleId",
+                table: "MuscleUsage",
+                column: "MuscleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -416,6 +480,9 @@ namespace WorkoutAppService.Migrations
                 name: "EquipmentExercise");
 
             migrationBuilder.DropTable(
+                name: "EquipmentGym");
+
+            migrationBuilder.DropTable(
                 name: "ExerciseExerciseCategory");
 
             migrationBuilder.DropTable(
@@ -423,6 +490,9 @@ namespace WorkoutAppService.Migrations
 
             migrationBuilder.DropTable(
                 name: "LinkedAccounts");
+
+            migrationBuilder.DropTable(
+                name: "MuscleUsage");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -434,16 +504,19 @@ namespace WorkoutAppService.Migrations
                 name: "Equipment");
 
             migrationBuilder.DropTable(
+                name: "Gyms");
+
+            migrationBuilder.DropTable(
                 name: "ExerciseCategories");
 
             migrationBuilder.DropTable(
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Muscles");
 
             migrationBuilder.DropTable(
-                name: "Muscles");
+                name: "AspNetUsers");
         }
     }
 }

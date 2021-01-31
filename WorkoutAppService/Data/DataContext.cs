@@ -15,6 +15,7 @@ namespace WorkoutAppService.Data
         public DbSet<Muscle> Muscles => Set<Muscle>();
         public DbSet<Exercise> Exercises => Set<Exercise>();
         public DbSet<ExerciseCategory> ExerciseCategories => Set<ExerciseCategory>();
+        public DbSet<Gym> Gyms => Set<Gym>();
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
@@ -48,17 +49,11 @@ namespace WorkoutAppService.Data
                 linkedAccount.Property(account => account.LinkedAccountType).HasConversion<string>();
             });
 
+            modelBuilder.Entity<MuscleUsage>()
+                .HasKey(k => new { k.ExerciseId, k.MuscleId });
+
             modelBuilder.Entity<ExerciseStep>()
                 .HasKey(k => new { k.ExerciseId, k.ExerciseStepNumber });
-
-            modelBuilder.Entity<Exercise>(exercise =>
-            {
-                exercise.HasOne(e => e.PrimaryMuscle)
-                    .WithMany(m => m!.PrimaryExercises);
-
-                exercise.HasOne(e => e.SecondaryMuscle)
-                    .WithMany(m => m!.SecondaryExercises);
-            });
         }
     }
 }

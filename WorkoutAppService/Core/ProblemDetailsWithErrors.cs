@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Net;
 
 namespace WorkoutAppService.Core
 {
@@ -37,6 +38,15 @@ namespace WorkoutAppService.Core
         }
 
         public ProblemDetailsWithErrors(string error, int statusCode, HttpRequest? request = null) :
+            this(new List<string> { error }, statusCode, request)
+        { }
+
+        public ProblemDetailsWithErrors(IList<string> errors, HttpStatusCode statusCode, HttpRequest? request = null)
+        {
+            SetProblemDetails(errors, (int)statusCode, request);
+        }
+
+        public ProblemDetailsWithErrors(string error, HttpStatusCode statusCode, HttpRequest? request = null) :
             this(new List<string> { error }, statusCode, request)
         { }
 

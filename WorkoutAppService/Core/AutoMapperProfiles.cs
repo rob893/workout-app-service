@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using WorkoutAppService.Entities;
 using WorkoutAppService.Models.DTOs;
+using WorkoutAppService.Models.QueryParameters;
 
 namespace WorkoutAppService.Core
 {
@@ -16,6 +17,7 @@ namespace WorkoutAppService.Core
             CreateMuscleMaps();
             CreateExerciseCategoryMaps();
             CreateExerciseMaps();
+            CreateGymMaps();
         }
 
         private void CreateUserMaps()
@@ -40,7 +42,7 @@ namespace WorkoutAppService.Core
 
         private void CreateEquipmentMaps()
         {
-            CreateMap<Equipment, EquipmentForReturnDto>();
+            CreateMap<Equipment, EquipmentForReturnDto>().ReverseMap();
             CreateMap<EquipmentForCreationDto, Equipment>();
             CreateMap<JsonPatchDocument<EquipmentForUpdateDto>, JsonPatchDocument<Equipment>>();
             CreateMap<Operation<EquipmentForUpdateDto>, Operation<Equipment>>();
@@ -60,6 +62,14 @@ namespace WorkoutAppService.Core
             CreateMap<ExerciseForCreationDto, Exercise>();
 
             CreateMap<ExerciseStep, ExerciseStepForReturnDto>();
+        }
+
+        private void CreateGymMaps()
+        {
+            CreateMap<Gym, GymForReturnDto>();
+            CreateMap<GymForCreateDto, Gym>();
+
+            CreateMap<CursorPaginationParameters, GymSearchParameters>();
         }
     }
 }

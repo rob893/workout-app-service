@@ -9,7 +9,7 @@ using WorkoutAppService.Data;
 namespace WorkoutAppService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210103225134_InitialCreate")]
+    [Migration("20210131011411_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,7 @@ namespace WorkoutAppService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("EquipmentExercise", b =>
                 {
@@ -32,6 +32,21 @@ namespace WorkoutAppService.Migrations
                     b.HasIndex("ExercisesId");
 
                     b.ToTable("EquipmentExercise");
+                });
+
+            modelBuilder.Entity("EquipmentGym", b =>
+                {
+                    b.Property<int>("AvailableEquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GymsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AvailableEquipmentId", "GymsId");
+
+                    b.HasIndex("GymsId");
+
+                    b.ToTable("EquipmentGym");
                 });
 
             modelBuilder.Entity("ExerciseExerciseCategory", b =>
@@ -171,10 +186,6 @@ namespace WorkoutAppService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrimaryMuscleId");
-
-                    b.HasIndex("SecondaryMuscleId");
-
                     b.ToTable("Exercises");
                 });
 
@@ -209,6 +220,32 @@ namespace WorkoutAppService.Migrations
                     b.HasKey("ExerciseId", "ExerciseStepNumber");
 
                     b.ToTable("ExerciseStep");
+                });
+
+            modelBuilder.Entity("WorkoutAppService.Entities.Gym", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Gyms");
                 });
 
             modelBuilder.Entity("WorkoutAppService.Entities.LinkedAccount", b =>
@@ -246,6 +283,24 @@ namespace WorkoutAppService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Muscles");
+                });
+
+            modelBuilder.Entity("WorkoutAppService.Entities.MuscleUsage", b =>
+                {
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MuscleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Usage")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseId", "MuscleId");
+
+                    b.HasIndex("MuscleId");
+
+                    b.ToTable("MuscleUsage");
                 });
 
             modelBuilder.Entity("WorkoutAppService.Entities.RefreshToken", b =>
@@ -404,6 +459,21 @@ namespace WorkoutAppService.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EquipmentGym", b =>
+                {
+                    b.HasOne("WorkoutAppService.Entities.Equipment", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableEquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutAppService.Entities.Gym", null)
+                        .WithMany()
+                        .HasForeignKey("GymsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ExerciseExerciseCategory", b =>
                 {
                     b.HasOne("WorkoutAppService.Entities.ExerciseCategory", null)
@@ -455,21 +525,6 @@ namespace WorkoutAppService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkoutAppService.Entities.Exercise", b =>
-                {
-                    b.HasOne("WorkoutAppService.Entities.Muscle", "PrimaryMuscle")
-                        .WithMany("PrimaryExercises")
-                        .HasForeignKey("PrimaryMuscleId");
-
-                    b.HasOne("WorkoutAppService.Entities.Muscle", "SecondaryMuscle")
-                        .WithMany("SecondaryExercises")
-                        .HasForeignKey("SecondaryMuscleId");
-
-                    b.Navigation("PrimaryMuscle");
-
-                    b.Navigation("SecondaryMuscle");
-                });
-
             modelBuilder.Entity("WorkoutAppService.Entities.ExerciseStep", b =>
                 {
                     b.HasOne("WorkoutAppService.Entities.Exercise", "Exercise")
@@ -481,6 +536,17 @@ namespace WorkoutAppService.Migrations
                     b.Navigation("Exercise");
                 });
 
+            modelBuilder.Entity("WorkoutAppService.Entities.Gym", b =>
+                {
+                    b.HasOne("WorkoutAppService.Entities.User", "User")
+                        .WithMany("Gyms")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WorkoutAppService.Entities.LinkedAccount", b =>
                 {
                     b.HasOne("WorkoutAppService.Entities.User", "User")
@@ -490,6 +556,25 @@ namespace WorkoutAppService.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WorkoutAppService.Entities.MuscleUsage", b =>
+                {
+                    b.HasOne("WorkoutAppService.Entities.Exercise", "Exercise")
+                        .WithMany("Muscles")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutAppService.Entities.Muscle", "Muscle")
+                        .WithMany()
+                        .HasForeignKey("MuscleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("Muscle");
                 });
 
             modelBuilder.Entity("WorkoutAppService.Entities.RefreshToken", b =>
@@ -525,13 +610,8 @@ namespace WorkoutAppService.Migrations
             modelBuilder.Entity("WorkoutAppService.Entities.Exercise", b =>
                 {
                     b.Navigation("ExerciseSteps");
-                });
 
-            modelBuilder.Entity("WorkoutAppService.Entities.Muscle", b =>
-                {
-                    b.Navigation("PrimaryExercises");
-
-                    b.Navigation("SecondaryExercises");
+                    b.Navigation("Muscles");
                 });
 
             modelBuilder.Entity("WorkoutAppService.Entities.Role", b =>
@@ -541,6 +621,8 @@ namespace WorkoutAppService.Migrations
 
             modelBuilder.Entity("WorkoutAppService.Entities.User", b =>
                 {
+                    b.Navigation("Gyms");
+
                     b.Navigation("LinkedAccounts");
 
                     b.Navigation("RefreshTokens");

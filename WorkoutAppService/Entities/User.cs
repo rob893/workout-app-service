@@ -17,5 +17,6 @@ namespace WorkoutAppService.Entities
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public List<LinkedAccount> LinkedAccounts { get; set; } = new List<LinkedAccount>();
+        public List<Gym> Gyms { get; set; } = new List<Gym>();
     }
 }
