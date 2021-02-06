@@ -53,7 +53,7 @@ namespace WorkoutAppService.ApplicationStartup
                 .UseHttpsRedirection()
                 .UseForwardedHeaders(new ForwardedHeadersOptions
                 {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                    ForwardedHeaders = ForwardedHeaders.All
                 })
                 .UseCors(header =>
                     header.WithOrigins(Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "*" })
